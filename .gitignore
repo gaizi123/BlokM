@@ -1,0 +1,29 @@
+# rules /directory  --in this path ;  directory/ -- every directories  ;  direcrtoryOrfile -- file and directory
+
+.DS_Store
+/dist
+
+# frontend files
+
+/client/node_modules
+#music files
+/public/musics
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+node_modules
