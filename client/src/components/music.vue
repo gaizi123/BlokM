@@ -77,11 +77,11 @@
         </div>
       </div>
 
-      <div class="btn-close-list" @click="showList=false">
+      <!-- <div class="btn-close-list" @click="showList=false">
         <span>></span>
         <span>></span>
         <span>></span>
-      </div>
+      </div> -->
       <div class="btn-add">
         <button :class="['paper-btn']">
           <label for="local-play">
@@ -485,6 +485,7 @@ export default {
 }
 .list-content-wrapper{
   height: calc(100% - 60px);
+  overflow: hidden;
 }
 .songList-item {
   margin-bottom: 15px;
