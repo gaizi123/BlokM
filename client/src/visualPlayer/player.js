@@ -71,10 +71,11 @@ function initAudio() {
   rc.rectangle(30, 207, 20, 10, { strokeWidth: 10 });
   rc.rectangle(230, 207, 20, 10, { strokeWidth: 10 });
   //soundMf
-  rc.circle(70, 100, 100, {
-    fill: "black",
-    fillStyle: "cross-hatch"
-  });
+  // rc.circle(70, 100, 100, {
+  //   fill: "#24292ee0",
+  //   fillStyle: "solid"
+  // });
+  rc.polygon(heartShape(20, 70, 80),{strokeWidth: 2 , stroke: 'yellow',fillStyle: "solid",fill:'#ffff00cf'})
   drawShadow("canvas-shadow");
 }
 function drawBar() {
@@ -113,3 +114,17 @@ export default {
   getAudioCtx,
   getFrameID
 };
+
+function heartShape(r, dx, dy) { //r:大小;dx:水平偏移;dy:垂直偏移;
+  var m, n, x, y, i;
+  let arr = [];
+  for (i = 0; i <= 7.9; i += 0.04) {
+    m = i;
+    n = -r * (((Math.sin(i) * Math.sqrt(Math.abs(Math.cos(i)))) / (Math.sin(i) + 1.4)) - 2 * Math.sin(i) +
+      2);
+    x = n * Math.cos(m) + dx;
+    y = n * Math.sin(m) + dy;
+    arr.push([x, y])
+  }
+  return arr
+}

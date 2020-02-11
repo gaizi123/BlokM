@@ -24,6 +24,7 @@
       <span class="guide-text">press it !!</span>
       <img src="../assets/icon-arrow-down.svg" alt class="icon" />
     </div>
+    <div class="love-days">{{loveDays}}</div>
   </div>
 </template>
 
@@ -38,13 +39,30 @@ export default {
     return {
       currentTime: "0:00",
       duration: "",
-      timePercent: ""
+      timePercent: "",
+      loveDays: "",
+      beginDay: "2017-5-10"
     };
   },
   props: {
     song: Object,
     resume: Boolean,
     songLoading: Boolean
+  },
+  mounted() {
+    if (detectmob()) {
+      this.$toast({
+        text: "很遗憾,手机端无法使用audioAPI哦,马上为您跳转到主页",
+        mode: "danger",
+        duration: 3000
+      });
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1600);
+    } else {
+      player.initAudio();
+      this.calcDays();
+    }
   },
   methods: {
     onPlay() {
@@ -86,20 +104,10 @@ export default {
     },
     autoChange() {
       this.$emit("song-ended");
-    }
-  },
-  mounted() {
-    if (detectmob()) {
-      this.$toast({
-        text: "很遗憾,手机端无法使用audioAPI哦,马上为您跳转到主页",
-        mode: "danger",
-        duration: 3000
-      });
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 1600);
-    } else {
-      player.initAudio();
+    },
+    calcDays() {
+      const DMs = new Date().getTime() - new Date(this.beginDay).getTime();
+      this.loveDays = Math.floor(DMs / 3600 / 24 / 1000);
     }
   }
 };
@@ -154,6 +162,7 @@ audio {
   opacity: 0.3;
 }
 .guide-line {
+  width: 80px;
   position: absolute;
   left: 222.5px;
   bottom: 330px;
@@ -173,6 +182,15 @@ audio {
 }
 .hidden-guide {
   opacity: 0;
+}
+.love-days {
+  position: absolute;
+  left: 65px;
+  bottom: 170px;
+  font-size: 28px;
+  height: 50px;
+  width: 60px;
+  color: rgb(35, 22, 32);
 }
 @keyframes guideLine {
   100%,

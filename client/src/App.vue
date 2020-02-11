@@ -21,12 +21,11 @@ export default {
   },
   methods: {
     changeImage(imgUrl, imgName) {
-      // console.log(imgName);
       const defaultImg = "https://w.wallhaven.cc/full/0j/wallhaven-0jk2gw.jpg";
       imgUrl = imgUrl || defaultImg;
       this.imgUrl = imgUrl;
       this.appStyle = {
-        background: `url(${imgUrl}) center no-repeat`
+        background: `url(${imgUrl}?${Math.random()}) center no-repeat`
       };
       setTimeout(() => {
         if (imgName == "Rain") {
