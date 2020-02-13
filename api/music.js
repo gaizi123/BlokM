@@ -1,14 +1,24 @@
-const myDb = require("../db/db");
+const { state, connect, getObjectID } = require("../db/db");
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
 const router = express.Router();
 
-const musicDB = myDb.state.musicDB
+
+// mongodb connect
+connect(err => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("database connected");
+  }
+});
+
+
 // login
 function authCheck(req, res) {
-  musicDB
+  state.musicDB
     .collection("account")
     .findOne({ username: req.data.name, password: req.data.password })
     .then(result =>
@@ -19,7 +29,7 @@ function authCheck(req, res) {
 }
 // check token
 const checkToken = async (req, res) => {
-  const account = await musicDB
+  const account = await state.musicDB
     .collection("account")
     .findOne({ token: req.headers.authorization });
   console.log(account);
@@ -30,17 +40,9 @@ const checkToken = async (req, res) => {
   }
 };
 
-// mongodb connect
-myDb.connect(err => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("database connected");
-  }
-});
 //get music
 router.get("/", (req, res) => {
-  musicDB
+  state.musicDB
     .collection("music")
     .find({})
     .toArray()
@@ -50,7 +52,7 @@ router.get("/", (req, res) => {
 //upload music
 const storage = multer.diskStorage({
   destination: path.resolve(__dirname, "../public/musics/"),
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(null, file.originalname);
   }
 });
@@ -65,7 +67,7 @@ router.post("/upload", async (req, res) => {
       if (err) {
         res.send(err);
       } else {
-        musicDB
+        state.musicDB
           .collection("music")
           .insertOne({
             name: req.file.originalname.split(".")[0],
@@ -87,10 +89,10 @@ router.post("/upload", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   const status = await checkToken(req, res);
   if (status.ok) {
-    musicDB
+    state.musicDB
       .collection("music")
       .deleteOne({
-        _id: myDb.getObjectID(req.params.id)
+        _id: getObjectID(req.params.id)
       })
 
       .then(result => res.status(200).send(result));
@@ -104,10 +106,10 @@ router.patch("/", async (req, res) => {
   const status = await checkToken(req, res);
   if (status.ok) {
     console.log(req.body);
-    musicDB
+    state.musicDB
       .collection("music")
       .updateOne(
-        { _id: myDb.getObjectID(req.body._id) },
+        { _id: getObjectID(req.body._id) },
 
         { $set: { name: req.body.name, songImage: req.body.songImage } }
       )
