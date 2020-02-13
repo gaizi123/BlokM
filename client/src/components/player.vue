@@ -187,7 +187,8 @@ audio {
   position: absolute;
   left: 65px;
   bottom: 170px;
-  font-size: 28px;
+  font-size: 32px;
+  font-weight: bolder;
   height: 50px;
   width: 60px;
   color: rgb(35, 22, 32);

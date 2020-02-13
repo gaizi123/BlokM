@@ -75,7 +75,7 @@ function initAudio() {
   //   fill: "#24292ee0",
   //   fillStyle: "solid"
   // });
-  rc.polygon(heartShape(20, 70, 80),{strokeWidth: 2 , stroke: 'yellow',fillStyle: "solid",fill:'#ffff00cf'})
+  rc.polygon(heartShape(20, 70, 80),{strokeWidth: 2 , stroke: '#ffff00cf',fillStyle: "cross-hatch",fill:'#ffff00cf',fillWeight:3 })
   drawShadow("canvas-shadow");
 }
 function drawBar() {
