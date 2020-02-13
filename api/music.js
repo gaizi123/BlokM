@@ -5,9 +5,10 @@ const path = require("path");
 const multer = require("multer");
 const router = express.Router();
 
+const musicDB = myDb.state.musicDB
 // login
 function authCheck(req, res) {
-  myDb.state.test1
+  musicDB
     .collection("account")
     .findOne({ username: req.data.name, password: req.data.password })
     .then(result =>
@@ -18,7 +19,7 @@ function authCheck(req, res) {
 }
 // check token
 const checkToken = async (req, res) => {
-  const account = await myDb.state.test1
+  const account = await musicDB
     .collection("account")
     .findOne({ token: req.headers.authorization });
   console.log(account);
@@ -39,7 +40,7 @@ myDb.connect(err => {
 });
 //get music
 router.get("/", (req, res) => {
-  myDb.state.test1
+  musicDB
     .collection("music")
     .find({})
     .toArray()
@@ -64,7 +65,7 @@ router.post("/upload", async (req, res) => {
       if (err) {
         res.send(err);
       } else {
-        myDb.state.test1
+        musicDB
           .collection("music")
           .insertOne({
             name: req.file.originalname.split(".")[0],
@@ -86,7 +87,7 @@ router.post("/upload", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   const status = await checkToken(req, res);
   if (status.ok) {
-    myDb.state.test1
+    musicDB
       .collection("music")
       .deleteOne({
         _id: myDb.getObjectID(req.params.id)
@@ -103,7 +104,7 @@ router.patch("/", async (req, res) => {
   const status = await checkToken(req, res);
   if (status.ok) {
     console.log(req.body);
-    myDb.state.test1
+    musicDB
       .collection("music")
       .updateOne(
         { _id: myDb.getObjectID(req.body._id) },
